@@ -1,5 +1,7 @@
 import './App.css';
 import react,{useState} from 'react';
+import Visibility from './Visibility';
+import Completedtodo from './Completedtodo';
 
 function App() {
   const[name,setName]=useState('Kalyan')
@@ -9,7 +11,10 @@ function App() {
     {action:"Collect Tickets",done:true},
     {action:"Call Joe",done:false},
   ])
+  const[showCompleted,setShowCompleted]=useState(true)
   const [newItemText,setNewItemText]=useState('')
+  const[filteredItems,setFilteredItems]=useState([])
+
   const changeHandler=()=>{
     const username =name=="Kalyan" ? "Pavan" :"Kalyan"
     setName(username)
@@ -27,9 +32,19 @@ function App() {
     }
     setNewItemText("")
   }
+
+
   const toggle=(item)=>{
     setTodoItems(todoitems.map(i=>i.action===item.action ? {...i,done:!i.done} : i))
   }
+
+const Handler=()=>{
+  setShowCompleted((prevstate)=>{
+    return !prevstate
+  })
+  const itemsfiltered=todoitems.filter((items)=>items.done)
+  setFilteredItems(itemsfiltered)
+}
 
   
   return (
@@ -55,8 +70,21 @@ function App() {
           </tr>
           )
           }</tbody>
-
       </table>
+
+      <div className='bg-secondary text-white text-center p-2 mt-5 mb-5'>
+        <Visibility description="Completed Tasks" ischecked={showCompleted} callback={Handler} 
+        
+        />
+      </div>
+
+
+      {!showCompleted && <Completedtodo items={filteredItems}/>}
+
+
+
+
+      
     </div>
   );
 }
