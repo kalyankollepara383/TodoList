@@ -27,7 +27,11 @@ function App() {
     }
     setNewItemText("")
   }
+  const toggle=(item)=>{
+    setTodoItems(todoitems.map(i=>i.action===item.action ? {...i,done:!i.done} : i))
+  }
 
+  
   return (
     <div>
       <h4 className="bg-primary text-white text-center p-2">
@@ -38,10 +42,21 @@ function App() {
         <div className='my-1'>
          <input className='form-control' value={newItemText} onChange={newitemchangeHandler}/>
          <button className='btn btn-primary br-2 text-white text-center mt-2' onClick={todoAdded}>Add</button>
-
         </div>
-
       </div>
+      <table className='table table-striped table-bordered'>
+        <thead>
+          <tr><th>Description</th><th>Done</th></tr>
+        </thead>
+        <tbody>{
+          todoitems.map(item=><tr key={item.action}>
+            <td>{item.action}</td>
+            <td><input type="checkbox" checked={item.done} onChange={()=>{toggle(item)}}></input></td>
+          </tr>
+          )
+          }</tbody>
+
+      </table>
     </div>
   );
 }
